@@ -1,0 +1,13 @@
+subject,action
+manage,all
+role,all
+user,all
+permission,read
+role,read
+role,create
+role,update
+role,delete
+user,read
+user,create
+user,update
+user,delete

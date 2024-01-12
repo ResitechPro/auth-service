@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: "idder"
+      changes:
+        - loadData:
+            relativeToChangelogFile: true
+            file: "seeders/permission.csv"
+            separator: ","
+            tableName: permissions
+            columns:
+              - column:
+                  name: "subject"
+                  header: "subject"
+              - column:
+                  name: "action"
+                  header: "action"
+  - changeSet:
+      id: 2
+      author: "idder"
+      changes:
+        - loadData:
+            relativeToChangelogFile: true
+            file: "seeders/role.csv"
+            separator: ","
+            tableName: roles
+            columns:
+              - column:
+                  name: "name"
+                  header: "name"
+  - changeSet:
+      id: 3
+      author: "idder"
+      changes:
+        - loadData:
+            relativeToChangelogFile: true
+            file: "seeders/user.csv"
+            separator: ","
+            tableName: users
+            columns:
+              - column:
+                  name: "first_name"
+                  header: "first_name"
+              - column:
+                  name: "last_name"
+                  header: "last_name"
+              - column:
+                  name: "email"
+                  header: "email"
+              - column:
+                  name: "password"
+                  header: "password"

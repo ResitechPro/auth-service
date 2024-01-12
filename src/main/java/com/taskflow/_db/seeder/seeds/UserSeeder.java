@@ -15,7 +15,7 @@ import java.util.Set;
 @Component
 public class UserSeeder {
 
-    //the idea behind this is to have a super admin user that you can use in your security level
+    //the idea behind this is to have a super admin user.csv that you can use in your security level
     //to grant full access
     //without permissions checks
     //in order for this seed to work you need to have a role with name SUPER_ADMIN

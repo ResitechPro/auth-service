@@ -13,7 +13,7 @@ public class PermissionSeeder {
     private final PermissionRepository permissionRepository;
 
     private final Set<String> subjects = Set.of(
-            "user",
+            "user.csv",
             "role",
             "task",
             "tag"

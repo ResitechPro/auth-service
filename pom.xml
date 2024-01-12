@@ -165,6 +165,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<finalName>auth-service</finalName>
+		<finalName>authentification</finalName>
 	</build>
 </project>

@@ -19,8 +19,8 @@ spring:
           format_sql: true
           use_sql_comments: true
     datasource:
-        #url: jdbc:postgresql://db:5432/taskflow # use this if you want to run the app in docker along with the db container
-        url: jdbc:postgresql://localhost:5432/taskflow # use this if you want to run the app locally , if no postgresql installed , use docker-compose in _resources/docker
+        #url: jdbc:postgresql://db:5432/authentification # use this if you want to run the app in docker along with the db container
+        url: jdbc:postgresql://localhost:5432/authentification # use this if you want to run the app locally , if no postgresql installed , use docker-compose in _resources/docker
         username: idder
         password: idderjamh
         driver-class-name: org.postgresql.Driver
@@ -35,7 +35,7 @@ jwt:
     signing:
         key: p5eHhtsr9qvSTaybbxGgYkhvnT7PYcqCxi6tNUEyXvQ=
 seeder:
-    enabled: true
+    enabled: false
     super-admin:
         password: 1234
 logging:

@@ -1,5 +1,5 @@
 databaseChangeLog:
   - include:
-      file: classpath:db/changelog/v1/02-01-changelog.yaml
+      file: classpath:db/changelog/v1/init-changelog.yaml
   - include:
-      file: classpath:db/changelog/v1/07-01-changelog.yaml
+      file: classpath:db/changelog/v1/init-seed-changelog.yaml
