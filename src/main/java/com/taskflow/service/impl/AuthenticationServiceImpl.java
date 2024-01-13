@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -49,7 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public JwtAuthenticationResponseDto signup(User user) throws ValidationException {
-        if(userRepository.findByEmail(user.getEmail()).isPresent())
+        if(userRepository.findByEmail(user.getPersonalEmail()).isPresent())
             throw new ValidationException(
                     List.of(
                             ErrorMessage.builder()
@@ -58,7 +59,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                     .build()
                     )
             );
-        roleRepository.findByName("USER").ifPresent(role -> user.setRoles(Set.of(role)));
+        if(userRepository.findByOrganizationName(user.getOrganizationName()).isPresent())
+            throw new ValidationException(
+                    List.of(
+                            ErrorMessage.builder()
+                                    .field("organization")
+                                    .message("organization already exists")
+                                    .build()
+                    )
+            );
+
+        roleRepository.findByName("OWNER").ifPresent(role -> user.setRoles(Set.of(role)));
+        String email = user.getLastName() + "-" + UUID.randomUUID().toString().substring(0,8) + "@" + user.getOrganizationName() + ".com";
+        user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return JwtAuthenticationResponseDto.builder()
