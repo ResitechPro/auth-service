@@ -23,6 +23,9 @@ public class User implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
+    private String organizationName;
+    @Column(unique = true)
+    private String personalEmail;
     private String email;
     private String password;
 
