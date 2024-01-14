@@ -1,12 +1,15 @@
 package com.taskflow.web.rest;
 
 import com.taskflow.config.context.TenantContext;
+import com.taskflow.domain.dto.response.user.UserResponseDto;
 import com.taskflow.domain.mapper.UserMapper;
 import com.taskflow.repository.UserRepository;
 import com.taskflow.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -33,6 +36,16 @@ public class UserRest {
     public ResponseEntity<Response<String>> getUser() {
         Response<String> response = new Response<>();
         response.setResult(TenantContext.getCurrentTenant());
+        return ResponseEntity.ok().body(response);
+    }
+    @GetMapping("/all")
+    public ResponseEntity<Response<List<UserResponseDto>>> allUsers() {
+        Response<List<UserResponseDto>> response = new Response<>();
+        response.setResult(
+                userRepository.findAll().stream()
+                        .map(userMapper::toDto)
+                        .toList()
+        );
         return ResponseEntity.ok().body(response);
     }
 }

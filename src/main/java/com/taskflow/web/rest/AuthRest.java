@@ -1,5 +1,6 @@
 package com.taskflow.web.rest;
 
+import com.taskflow.config.context.TenantContext;
 import com.taskflow.domain.dto.request.auth.SigninRequestDto;
 import com.taskflow.domain.dto.request.jwt.RefreshTokenRequestDto;
 import com.taskflow.domain.dto.request.user.UserRequestDto;
@@ -17,6 +18,7 @@ import com.taskflow.service.RefreshTokenService;
 import com.taskflow.service.UserService;
 import com.taskflow.utils.Response;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Slf4j
 public class AuthRest {
     private final AuthenticationService authenticationService;
     private final RefreshTokenService refreshTokenService;
@@ -76,6 +79,7 @@ public class AuthRest {
                         .getToken()
         );
         response.setResult(jwtAuthenticationResponseDto);
+        log.info("currrent tenant: {}", TenantContext.getCurrentTenant());
         return ResponseEntity.ok().body(response);
     }
 
