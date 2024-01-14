@@ -50,7 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public JwtAuthenticationResponseDto signup(User user) throws ValidationException {
-        if(userRepository.findByEmail(user.getPersonalEmail()).isPresent())
+        if(userRepository.findByPersonalEmail(user.getPersonalEmail()).isPresent())
             throw new ValidationException(
                     List.of(
                             ErrorMessage.builder()
@@ -70,7 +70,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             );
 
         roleRepository.findByName("OWNER").ifPresent(role -> user.setRoles(Set.of(role)));
-        String email = user.getLastName() + "-" + UUID.randomUUID().toString().substring(0,8) + "@" + user.getOrganizationName() + ".com";
+        String organizationName = user.getOrganizationName().replaceAll("\\s+","");
+        String email = user.getLastName() + "-" + UUID.randomUUID().toString().substring(0,8) + "@" + organizationName + ".com";
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
