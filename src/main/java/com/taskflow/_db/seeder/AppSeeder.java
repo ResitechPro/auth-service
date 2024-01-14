@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AppSeeder {
+
     @Value("${seeder.enabled}")
     private Boolean seederEnabled;
 
@@ -20,8 +21,12 @@ public class AppSeeder {
     private final UserSeeder userSeeder;
 
     @PostConstruct
-    public void init() {
+    public void inti() {
         if(Boolean.FALSE.equals(seederEnabled)) return;
+        run();
+    }
+
+    public void run() {
         permissionSeeder.seed();
         roleSeeder.seed();
         userSeeder.seed();
