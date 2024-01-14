@@ -11,11 +11,11 @@ import java.util.Objects;
 import static org.hibernate.cfg.MultiTenancySettings.MULTI_TENANT_IDENTIFIER_RESOLVER;
 
 @Component
-public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver, HibernatePropertiesCustomizer {
+public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver<String>, HibernatePropertiesCustomizer {
 
     @Override
     public String resolveCurrentTenantIdentifier() {
-        return Objects.requireNonNullElse(TenantContext.getCurrentTenant(), "PUBLIC");
+        return Objects.requireNonNullElse(TenantContext.getCurrentTenant(), "public");
     }
 
     @Override

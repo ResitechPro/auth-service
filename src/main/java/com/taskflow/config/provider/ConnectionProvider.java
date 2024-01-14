@@ -1,6 +1,5 @@
 package com.taskflow.config.provider;
 
-import com.taskflow.config.resolver.TenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import static org.hibernate.cfg.MultiTenancySettings.MULTI_TENANT_CONNECTION_PRO
 
 @Component
 public class ConnectionProvider implements MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
-    private final DataSource dataSource;
+    private final transient DataSource dataSource;
     public ConnectionProvider(DataSource dataSource) {
         this.dataSource = dataSource;
     }
