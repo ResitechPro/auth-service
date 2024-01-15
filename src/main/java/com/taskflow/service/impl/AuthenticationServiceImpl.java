@@ -9,7 +9,9 @@ import com.taskflow.repository.RoleRepository;
 import com.taskflow.repository.UserRepository;
 import com.taskflow.service.AuthenticationService;
 import com.taskflow.service.JwtService;
-import com.taskflow.utils.ErrorMessage;
+import com.taskflow.service.TenantService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,6 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final TenantService tenantService;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public AuthenticationServiceImpl(
             UserRepository userRepository,
@@ -38,7 +42,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             JwtService jwtService,
             AuthenticationManager authenticationManager,
             RoleRepository roleRepository,
-            UserMapper userMapper
+            UserMapper userMapper,
+            TenantService tenantService
     ) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -46,31 +51,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.tenantService = tenantService;
     }
     @Override
     @Transactional
     public JwtAuthenticationResponseDto signup(User user) throws ValidationException {
-        if(userRepository.findByPersonalEmail(user.getPersonalEmail()).isPresent())
-            throw new ValidationException(
-                    List.of(
-                            ErrorMessage.builder()
-                                    .field("email")
-                                    .message("Email already exists")
-                                    .build()
-                    )
-            );
-        if(userRepository.findByOrganizationName(user.getOrganizationName()).isPresent())
-            throw new ValidationException(
-                    List.of(
-                            ErrorMessage.builder()
-                                    .field("organization")
-                                    .message("organization already exists")
-                                    .build()
-                    )
-            );
-
-        roleRepository.findByName("OWNER").ifPresent(role -> user.setRoles(Set.of(role)));
         String organizationName = user.getOrganizationName().replaceAll("\\s+","");
+        tenantService.createTenant(organizationName);
+        roleRepository.findByName("OWNER").ifPresent(role -> user.setRoles(Set.of(role)));
         String email = user.getLastName() + "-" + UUID.randomUUID().toString().substring(0,8) + "@" + organizationName + ".com";
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
