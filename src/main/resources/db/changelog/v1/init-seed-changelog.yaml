@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1
+      id: seed-1
       author: "idder"
       changes:
         - loadData:
@@ -16,7 +16,7 @@ databaseChangeLog:
                   name: "action"
                   header: "action"
   - changeSet:
-      id: 2
+      id: seed-2
       author: "idder"
       changes:
         - loadData:
@@ -29,7 +29,7 @@ databaseChangeLog:
                   name: "name"
                   header: "name"
   - changeSet:
-      id: 3
+      id: seed-3
       author: "idder"
       changes:
         - loadData:
