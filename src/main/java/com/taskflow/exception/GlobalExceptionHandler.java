@@ -5,6 +5,7 @@ import com.taskflow.exception.customexceptions.InValidRefreshTokenException;
 import com.taskflow.exception.customexceptions.ValidationException;
 import com.taskflow.utils.ErrorMessage;
 import com.taskflow.utils.Response;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -92,6 +93,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 response,
                 HttpStatus.BAD_REQUEST
+        );
+    }
+    @ExceptionHandler({
+            InvalidDataAccessResourceUsageException.class
+    })
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Response<String>> notFoundTenant(InvalidDataAccessResourceUsageException ex) {
+        Response<String> response = new Response<>();
+        response.setMessage("Organization Not found ");
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.NOT_FOUND
         );
     }
 }

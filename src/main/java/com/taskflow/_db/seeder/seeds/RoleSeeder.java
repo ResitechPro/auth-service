@@ -13,6 +13,7 @@ public class RoleSeeder {
 
     private final Set<String> roles = Set.of(
             "SUPER_ADMIN",
+            "OWNER",
             "MANAGER",
             "USER"
     ); // add your roles here
