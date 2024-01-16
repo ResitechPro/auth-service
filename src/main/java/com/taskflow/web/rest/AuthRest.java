@@ -1,8 +1,8 @@
 package com.taskflow.web.rest;
 
-import com.taskflow.config.context.TenantContext;
 import com.taskflow.domain.dto.request.auth.SigninRequestDto;
 import com.taskflow.domain.dto.request.jwt.RefreshTokenRequestDto;
+import com.taskflow.domain.dto.request.jwt.ValidateTokenRequestDto;
 import com.taskflow.domain.dto.request.user.UserRequestDto;
 import com.taskflow.domain.dto.response.auth.JwtAuthenticationResponseDto;
 import com.taskflow.domain.dto.response.jwt.RefreshTokenResponseDTO;
@@ -18,7 +18,7 @@ import com.taskflow.service.RefreshTokenService;
 import com.taskflow.service.UserService;
 import com.taskflow.utils.Response;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +31,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@Slf4j
 public class AuthRest {
     private final AuthenticationService authenticationService;
     private final RefreshTokenService refreshTokenService;
-    private JwtService jwtService;
-    private UserService userService;
-    private UserMapper userMapper;
+    private final JwtService jwtService;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     public AuthRest(
             AuthenticationService authenticationService,
@@ -79,7 +78,6 @@ public class AuthRest {
                         .getToken()
         );
         response.setResult(jwtAuthenticationResponseDto);
-        log.info("currrent tenant: {}", TenantContext.getCurrentTenant());
         return ResponseEntity.ok().body(response);
     }
 
@@ -101,5 +99,19 @@ public class AuthRest {
         return RefreshTokenResponseDTO.builder()
                 .accessToken(accessToken)
                 .build();
+    }
+
+    @PostMapping("/validateToken")
+    public ResponseEntity<Response<Boolean>> validateToken(@RequestBody ValidateTokenRequestDto validateTokenRequestDto) {
+        Response<Boolean> response = new Response<>();
+        String username = jwtService.extractUserName(validateTokenRequestDto.getAccessToken());
+        boolean validated = false;
+        if(StringUtils.isNotEmpty(username)){
+            UserDetails userDetails = userService.userDetailsService()
+                    .loadUserByUsername(username);
+            if (jwtService.isTokenValid(validateTokenRequestDto.getAccessToken(), userDetails)) validated = true;
+        }
+        response.setResult(validated);
+        return ResponseEntity.ok().body(response);
     }
 }
