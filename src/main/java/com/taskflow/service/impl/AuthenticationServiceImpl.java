@@ -56,7 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public JwtAuthenticationResponseDto signup(User user) throws ValidationException {
-        String organizationName = user.getOrganizationName().replaceAll("\\s+","");
+        String organizationName = user.getOrganizationName().replaceAll("\\s+","").toLowerCase();
         tenantService.createTenant(organizationName);
         roleRepository.findByName("OWNER").ifPresent(role -> user.setRoles(Set.of(role)));
         String email = user.getLastName() + "-" + UUID.randomUUID().toString().substring(0,8) + "@" + organizationName + ".com";
