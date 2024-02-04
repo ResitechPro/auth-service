@@ -101,6 +101,7 @@ public class AuthRest {
                 .build();
     }
 
+
     @PostMapping("/validateToken")
     public ResponseEntity<Response<Boolean>> validateToken(@RequestBody ValidateTokenRequestDto validateTokenRequestDto) {
         Response<Boolean> response = new Response<>();

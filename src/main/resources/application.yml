@@ -5,7 +5,7 @@ server:
     include-binding-errors: always
 spring:
     application:
-      name: taskFlow
+      name: authentification
     jpa:
       hibernate:
         ddl-auto: none # not working !
@@ -43,4 +43,5 @@ logging:
     org:
       springframework:
         web: trace
+        security: trace
     liquibase: trace
