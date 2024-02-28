@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1709112880380-7
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_tenants
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: organization_name
+                  type: VARCHAR(255)
+              - column:
+                  name: personal_email
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+            tableName: tenants
+  - changeSet:
+      id: 1709112880380-11
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: personal_email
+            constraintName: uc_tenants_personal_email
+            tableName: tenants
+

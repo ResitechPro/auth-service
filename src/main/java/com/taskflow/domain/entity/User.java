@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_role",
         joinColumns = @JoinColumn(
@@ -39,9 +39,9 @@ public class User implements UserDetails {
                 name = "role_id"
         )
     )
-    private transient Set<Role> roles;
+    private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_group",
         joinColumns = @JoinColumn(
@@ -51,7 +51,7 @@ public class User implements UserDetails {
                 name = "group_id"
         )
     )
-    private transient Set<PermissionGroup> permissionGroups;
+    private Set<PermissionGroup> permissionGroups;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

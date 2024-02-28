@@ -37,13 +37,12 @@ public class AuthRest {
     private final JwtService jwtService;
     private final UserService userService;
     private final UserMapper userMapper;
-
     public AuthRest(
-            AuthenticationService authenticationService,
-            RefreshTokenService refreshTokenService,
-            JwtService jwtService,
-            UserService userService,
-            UserMapper userMapper
+        AuthenticationService authenticationService,
+        RefreshTokenService refreshTokenService,
+        JwtService jwtService,
+        UserService userService,
+        UserMapper userMapper
     ) {
         this.authenticationService = authenticationService;
         this.refreshTokenService = refreshTokenService;
@@ -58,8 +57,8 @@ public class AuthRest {
         User user = userMapper.toUser(userRequestDto);
         JwtAuthenticationResponseDto jwtAuthenticationResponseDto = authenticationService.signup(user);
         jwtAuthenticationResponseDto.setRefreshToken(
-                refreshTokenService.getOrCreateRefreshToken(user.getEmail())
-                .getToken()
+            refreshTokenService.getOrCreateRefreshToken(user.getEmail())
+            .getToken()
         );
         response.setResult(jwtAuthenticationResponseDto);
         return ResponseEntity.ok().body(response);

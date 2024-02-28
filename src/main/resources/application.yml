@@ -26,7 +26,7 @@ spring:
         driver-class-name: org.postgresql.Driver
     liquibase:
       enabled: true
-      change-log: classpath:db/changelog/db.changelog-master.yml
+      change-log: classpath:db/changelog/public/db.public.changelog-master.yml
 jwt:
     access:
         expirationInMs: 1440000 # 24 minutes

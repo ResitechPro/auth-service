@@ -17,13 +17,13 @@ public class JwtTenantResolver implements TenantResolver<HttpServletRequest> {
     @Override
     public String resolveTenant(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
+        if( request.getHeader("X-tenant-id") != null){
+            return request.getHeader("X-tenant-id");
+        }
         if(authHeader != null && authHeader.startsWith("Bearer ")){
             String jwtToken = authHeader.substring(7);
             String email = jwtService.extractUserName(jwtToken);
             return organizationNameExtractor.extract(email);
-        }
-        if( request.getHeader("organizationName") != null){
-            return request.getHeader("organizationName");
         }
         return "public";
     }
