@@ -4,7 +4,6 @@ import com.taskflow.domain.entity.Tenant;
 import com.taskflow.repository.TenantRepository;
 import com.taskflow.repository.UserRepository;
 import com.taskflow.service.TenantService;
-import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

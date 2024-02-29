@@ -51,7 +51,7 @@ public class AuthRest {
         this.userMapper = userMapper;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     public ResponseEntity<Response<JwtAuthenticationResponseDto>> signup(@RequestBody @Valid UserRequestDto userRequestDto) throws ValidationException {
         Response<JwtAuthenticationResponseDto> response = new Response<>();
         User user = userMapper.toUser(userRequestDto);
@@ -64,7 +64,7 @@ public class AuthRest {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     public ResponseEntity<Response<JwtAuthenticationResponseDto>> signin(@RequestBody @Valid SigninRequestDto signinRequestDto) throws BadRequestException {
         Response<JwtAuthenticationResponseDto> response = new Response<>();
         User user = User.builder()
@@ -80,7 +80,7 @@ public class AuthRest {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/refreshToken")
+    @PostMapping("/refresh-token")
     public RefreshTokenResponseDTO refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDTO) throws InValidRefreshTokenException {
         Optional<RefreshToken> optionalRefreshToken = refreshTokenService.findByToken(refreshTokenRequestDTO.getRefreshToken());
         RefreshToken refreshToken = null;
@@ -101,7 +101,7 @@ public class AuthRest {
     }
 
 
-    @PostMapping("/validateToken")
+    @PostMapping("/validate-token")
     public ResponseEntity<Response<Boolean>> validateToken(@RequestBody ValidateTokenRequestDto validateTokenRequestDto) {
         Response<Boolean> response = new Response<>();
         String username = jwtService.extractUserName(validateTokenRequestDto.getAccessToken());
