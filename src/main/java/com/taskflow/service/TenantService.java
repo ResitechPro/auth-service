@@ -1,12 +1,12 @@
 package com.taskflow.service;
 
+import com.taskflow.domain.entity.Tenant;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.StyledEditorKit;
 
 
 @Service
 public interface TenantService {
     Boolean checkAvailableTenant(String tenantName);
-    void createTenant(String tenantName);
+    void createTenant(Tenant tenant);
 }

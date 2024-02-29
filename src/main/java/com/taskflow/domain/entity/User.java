@@ -1,5 +1,6 @@
 package com.taskflow.domain.entity;
 
+import com.taskflow.config.context.TenantContext;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

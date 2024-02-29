@@ -8,11 +8,11 @@
 		<version>3.2.1</version>
 	<relativePath/>
 	</parent>
-	<groupId>com.taskflow</groupId>
-	<artifactId>taskflow</artifactId>
+	<groupId>com.auth</groupId>
+	<artifactId>auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>taskflow</name>
-	<description>taskflow</description>
+	<name>auth</name>
+	<description>auth service</description>
 	<properties>
 		<java.version>17</java.version>
 		<jacoco.version>0.8.7</jacoco.version>

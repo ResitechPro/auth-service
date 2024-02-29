@@ -1,7 +1,9 @@
 package com.taskflow.service.impl;
 
+import com.taskflow.config.context.TenantContext;
 import com.taskflow.domain.dto.response.auth.JwtAuthenticationResponseDto;
 import com.taskflow.domain.entity.User;
+import com.taskflow.domain.mapper.TenantMapper;
 import com.taskflow.domain.mapper.UserMapper;
 import com.taskflow.exception.customexceptions.BadRequestException;
 import com.taskflow.exception.customexceptions.ValidationException;
@@ -26,14 +28,12 @@ import java.util.UUID;
 @Component
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final TenantService tenantService;
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final TenantMapper tenantMapper;
 
     public AuthenticationServiceImpl(
             UserRepository userRepository,
@@ -41,27 +41,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
             AuthenticationManager authenticationManager,
-            RoleRepository roleRepository,
             UserMapper userMapper,
+            TenantMapper tenantMapper,
             TenantService tenantService
     ) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.tenantService = tenantService;
+        this.tenantMapper = tenantMapper;
     }
     @Override
     @Transactional
     public JwtAuthenticationResponseDto signup(User user) throws ValidationException {
-        String organizationName = user.getOrganizationName().replaceAll("\\s+","").toLowerCase();
-        tenantService.createTenant(organizationName);
-        roleRepository.findByName("OWNER").ifPresent(role -> user.setRoles(Set.of(role)));
-        String email = user.getLastName() + "-" + UUID.randomUUID().toString().substring(0,8) + "@" + organizationName + ".com";
+        String email = user.getLastName() + "-" +
+                UUID.randomUUID().toString().substring(0,8) + "@" +
+                TenantContext.getCurrentTenant() + ".com";
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        tenantService.createTenant(tenantMapper.userToTenant(user));
         userRepository.save(user);
         return JwtAuthenticationResponseDto.builder()
                 .accessToken(jwtService.generateToken(user))
@@ -71,7 +71,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponseDto signin(User user) throws BadRequestException {
-
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
         );

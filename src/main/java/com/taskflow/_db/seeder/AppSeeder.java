@@ -22,8 +22,7 @@ public class AppSeeder {
 
     @PostConstruct
     public void inti() {
-        if(Boolean.FALSE.equals(seederEnabled)) return;
-        run();
+        if(Boolean.TRUE.equals(seederEnabled)) run();
     }
 
     public void run() {
