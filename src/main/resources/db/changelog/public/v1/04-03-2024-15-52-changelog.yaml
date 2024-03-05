@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1709563878270-1
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: tenant_id
+                  type: VARCHAR(255)
+            tableName: tenants
+  - changeSet:
+      id: 1709563878270-2
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: organization_name
+            constraintName: uc_tenants_organization_name
+            tableName: tenants
+  - changeSet:
+      id: 1709563878270-3
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: tenant_id
+            constraintName: uc_tenants_tenant
+            tableName: tenants
+
