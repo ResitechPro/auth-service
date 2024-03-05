@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AuthenticationService {
-    JwtAuthenticationResponseDto signup(User request) throws ValidationException;
-    JwtAuthenticationResponseDto signin(User request) throws BadRequestException;
+    JwtAuthenticationResponseDto signup(User user, String organizationId) throws ValidationException;
+    JwtAuthenticationResponseDto signin(User user) throws BadRequestException;
 }

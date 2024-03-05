@@ -28,26 +28,26 @@ public class TenantServiceImpl implements TenantService {
         this.userRepository = userRepository;
     }
     @Override
-    public Boolean checkAvailableTenant(String tenantName) {
-        return (! tenantRepository.checkAvailableTenant(tenantName) );
+    public Boolean checkAvailableTenant(String tenantId) {
+        return (! tenantRepository.checkAvailableTenant(tenantId) );
     }
     @Override
     @Transactional
-    public void createTenant(Tenant tenant) {
+    public void createTenant(Tenant tenant,String tenantId) {
         //Todo: look for an alternative way to create schemas using jpa
-        String tenantName = TenantContext.getCurrentTenant();
         try(Statement statement = dataSource.getConnection().createStatement()) {
             //create schema
-            statement.execute("CREATE SCHEMA " + tenantName);
+            statement.execute("CREATE SCHEMA " + tenantId);
             // run liquibase changelogs on the new schema
             SpringLiquibase liquibase = new SpringLiquibase();
             liquibase.setDataSource(dataSource);
-            liquibase.setDefaultSchema(tenantName);
+            liquibase.setDefaultSchema(tenantId);
             liquibase.setChangeLog("db/changelog/tenants/db.tenant.changelog-master.yml");
             liquibase.afterPropertiesSet();
             //insert tenant
             tenant.setAccessionDate(LocalDateTime.now());
             tenant.setIsActive(true);
+            tenant.setTenantId(tenantId);
             tenantRepository.save(tenant);
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -1,6 +1,7 @@
 package com.taskflow.web.rest;
 
 import com.taskflow.domain.dto.request.auth.SigninRequestDto;
+import com.taskflow.domain.dto.request.auth.SignupRequestDto;
 import com.taskflow.domain.dto.request.jwt.RefreshTokenRequestDto;
 import com.taskflow.domain.dto.request.jwt.ValidateTokenRequestDto;
 import com.taskflow.domain.dto.request.user.UserRequestDto;
@@ -52,10 +53,10 @@ public class AuthRest {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Response<JwtAuthenticationResponseDto>> signup(@RequestBody @Valid UserRequestDto userRequestDto) throws ValidationException {
+    public ResponseEntity<Response<JwtAuthenticationResponseDto>> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) throws ValidationException {
         Response<JwtAuthenticationResponseDto> response = new Response<>();
-        User user = userMapper.toUser(userRequestDto);
-        JwtAuthenticationResponseDto jwtAuthenticationResponseDto = authenticationService.signup(user);
+        User user = userMapper.toUser(signupRequestDto);
+        JwtAuthenticationResponseDto jwtAuthenticationResponseDto = authenticationService.signup(user,signupRequestDto.getOrganizationId());
         jwtAuthenticationResponseDto.setRefreshToken(
             refreshTokenService.getOrCreateRefreshToken(user.getEmail())
             .getToken()

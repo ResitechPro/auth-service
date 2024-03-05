@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TenantService {
-    Boolean checkAvailableTenant(String tenantName);
-    void createTenant(Tenant tenant);
+    Boolean checkAvailableTenant(String tenantId);
+    void createTenant(Tenant tenant, String tenantId);
 }

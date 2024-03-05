@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Long> {
-    @Query("select count(t) > 0 from Tenant t where t.organizationName = :tenantName")
-    Boolean checkAvailableTenant(String tenantName);
+    @Query("select count(t) > 0 from Tenant t where t.tenantId = :tenantId")
+    Boolean checkAvailableTenant(String tenantId);
 }

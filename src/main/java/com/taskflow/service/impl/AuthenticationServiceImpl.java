@@ -12,6 +12,7 @@ import com.taskflow.repository.UserRepository;
 import com.taskflow.service.AuthenticationService;
 import com.taskflow.service.JwtService;
 import com.taskflow.service.TenantService;
+import com.taskflow.utils.ErrorMessage;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -55,13 +57,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
     @Override
     @Transactional
-    public JwtAuthenticationResponseDto signup(User user) throws ValidationException {
+    public JwtAuthenticationResponseDto signup(User user,String organizationId) throws ValidationException {
+        if( Boolean.FALSE.equals(tenantService.checkAvailableTenant(organizationId)))
+            throw new ValidationException(
+                    List.of(
+                            ErrorMessage.builder()
+                                .field("organization id")
+                                .message("Organization id already exists")
+                                .build()
+                    )
+            );
         String email = user.getLastName() + "-" +
                 UUID.randomUUID().toString().substring(0,8) + "@" +
-                TenantContext.getCurrentTenant() + ".com";
+                organizationId + ".com";
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        tenantService.createTenant(tenantMapper.userToTenant(user));
+        tenantService.createTenant(tenantMapper.userToTenant(user),organizationId);
         userRepository.save(user);
         return JwtAuthenticationResponseDto.builder()
                 .accessToken(jwtService.generateToken(user))

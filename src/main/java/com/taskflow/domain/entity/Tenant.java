@@ -18,7 +18,10 @@ public class Tenant {
     private Long id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String organizationName;
+    @Column(unique = true)
+    private String tenantId;
     @Column(unique = true)
     private String personalEmail;
     private String email;
