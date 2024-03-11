@@ -17,4 +17,5 @@ public class Permission {
     private Long id;
     private String subject; //entity or resource
     private String action; //create, read, update, delete
+    private String description;
 }
