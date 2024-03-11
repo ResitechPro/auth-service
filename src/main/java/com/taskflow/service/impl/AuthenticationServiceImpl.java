@@ -7,6 +7,7 @@ import com.taskflow.domain.mapper.TenantMapper;
 import com.taskflow.domain.mapper.UserMapper;
 import com.taskflow.exception.customexceptions.BadRequestException;
 import com.taskflow.exception.customexceptions.ValidationException;
+import com.taskflow.repository.PermissionRepository;
 import com.taskflow.repository.RoleRepository;
 import com.taskflow.repository.UserRepository;
 import com.taskflow.service.AuthenticationService;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -36,6 +38,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMapper userMapper;
     private final TenantService tenantService;
     private final TenantMapper tenantMapper;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
+
 
     public AuthenticationServiceImpl(
             UserRepository userRepository,
@@ -43,9 +48,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
             AuthenticationManager authenticationManager,
+            TenantService tenantService,
             UserMapper userMapper,
             TenantMapper tenantMapper,
-            TenantService tenantService
+            RoleRepository roleRepository,
+            PermissionRepository permissionRepository
     ) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -54,6 +61,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.userMapper = userMapper;
         this.tenantService = tenantService;
         this.tenantMapper = tenantMapper;
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
     }
     @Override
     @Transactional
@@ -86,6 +95,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         tenantService.createTenant(tenantMapper.userToTenant(user),organizationId);
+        roleRepository.findByName("OWNER").ifPresent(role ->
+            permissionRepository.findBySubjectAndAction("manage","all").ifPresent(permission ->{
+                role.setPermissions(Set.of(permission));
+                user.setRoles(Set.of(role));
+            })
+        );
         userRepository.save(user);
         return JwtAuthenticationResponseDto.builder()
                 .accessToken(jwtService.generateToken(user))
