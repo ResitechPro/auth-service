@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Component
 public class TenantServiceImpl implements TenantService {
@@ -52,5 +53,15 @@ public class TenantServiceImpl implements TenantService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Optional<Tenant> getTenantByOrganizationName(String organizationName) {
+        return tenantRepository.findByOrganizationName(organizationName);
+    }
+
+    @Override
+    public Optional<Tenant> getTenantByPersonalEmail(String personalEmail) {
+        return tenantRepository.findByPersonalEmail(personalEmail);
     }
 }
