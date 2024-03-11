@@ -16,5 +16,6 @@ public class UserResponseDto {
     private String email;
     private String firstName;
     private String lastName;
-    private Set<RoleResponseDto> roles;
+    private Set<String> rolePermissions;
+    private Set<String> permissionGroupPermissions;
 }
