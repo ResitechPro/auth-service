@@ -23,8 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -58,15 +58,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public JwtAuthenticationResponseDto signup(User user,String organizationId) throws ValidationException {
-        if( Boolean.FALSE.equals(tenantService.checkAvailableTenant(organizationId)))
-            throw new ValidationException(
-                    List.of(
-                            ErrorMessage.builder()
-                                .field("organization id")
-                                .message("Organization id already exists")
-                                .build()
-                    )
+        List<ErrorMessage> errors = new ArrayList<>();
+        if( tenantService.getTenantByOrganizationName(user.getOrganizationName()).isPresent())
+            errors.add(ErrorMessage.builder()
+                    .field("organization name")
+                    .message("organization name already exists")
+                    .build()
             );
+        if( tenantService.getTenantByPersonalEmail(user.getPersonalEmail()).isPresent())
+            errors.add(ErrorMessage.builder()
+                    .field("email")
+                    .message("Email already exists")
+                    .build()
+            );
+
+        if( Boolean.FALSE.equals(tenantService.checkAvailableTenant(organizationId)))
+            errors.add(
+                    ErrorMessage.builder()
+                            .field("organization id")
+                            .message("Organization id already exists")
+                            .build()
+            );
+        if(!errors.isEmpty()) throw new ValidationException(errors);
         String email = user.getLastName() + "-" +
                 UUID.randomUUID().toString().substring(0,8) + "@" +
                 organizationId + ".com";
