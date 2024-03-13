@@ -1,13 +1,28 @@
-subject,action
-manage,all
-role,all
-user,all
-permission,read
-role,read
-role,create
-role,update
-role,delete
-user,read
-user,create
-user,update
-user,delete
+subject,action,description
+manage,all,"Grants full control over the specified resource."
+permission,read,"Allows reading/viewing permissions."
+role,all,"Grants full control over roles."
+role,read,"Allows reading/viewing roles."
+role,create,"Allows creating new roles."
+role,update,"Allows updating/modifying roles."
+role,delete,"Allows deleting roles."
+user,all,"Grants full control over users."
+user,read,"Allows reading/viewing users."
+user,create,"Allows creating new users."
+user,update,"Allows updating/modifying users."
+user,delete,"Allows deleting users."
+property,all,"Grants full control over properties."
+property,read,"Allows reading/viewing properties."
+property,create,"Allows creating new properties."
+property,update,"Allows updating/modifying properties."
+property,delete,"Allows deleting properties."
+building,all,"Grants full control over buildings."
+building,read,"Allows reading/viewing buildings."
+building,create,"Allows creating new buildings."
+building,update,"Allows updating/modifying buildings."
+building,delete,"Allows deleting buildings."
+residence,all,"Grants full control over residences."
+residence,read,"Allows reading/viewing residences."
+residence,create,"Allows creating new residences."
+residence,update,"Allows updating/modifying residences."
+residence,delete,"Allows deleting residences."

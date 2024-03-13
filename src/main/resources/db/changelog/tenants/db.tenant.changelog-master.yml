@@ -2,6 +2,8 @@ databaseChangeLog:
   - include:
       file: classpath:db/changelog/tenants/v1/init-changelog.yaml
   - include:
+      file: classpath:db/changelog/tenants/v1/11-03-2024-18-59-changelog.yaml
+  - include:
       file: classpath:db/changelog/tenants/v1/init-seed-changelog.yaml
   - include:
       file: classpath:db/changelog/tenants/v1/14-01-00-02-changelog.yaml

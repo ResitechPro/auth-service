@@ -1,6 +1,5 @@
 package com.taskflow.domain.dto.response.user;
 
-import com.taskflow.domain.dto.response.role.RoleResponseDto;
 import lombok.*;
 
 import java.util.Set;
