@@ -14,9 +14,11 @@ import com.taskflow.service.AuthenticationService;
 import com.taskflow.service.JwtService;
 import com.taskflow.service.TenantService;
 import com.taskflow.utils.ErrorMessage;
+import com.taskflow.web.feign.UuidClient;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,6 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final TenantMapper tenantMapper;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
+    private final UuidClient uuidClient;
 
 
     public AuthenticationServiceImpl(
@@ -52,7 +55,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             UserMapper userMapper,
             TenantMapper tenantMapper,
             RoleRepository roleRepository,
-            PermissionRepository permissionRepository
+            PermissionRepository permissionRepository,
+            UuidClient uuidClient
     ) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -63,6 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.tenantMapper = tenantMapper;
         this.roleRepository = roleRepository;
         this.permissionRepository = permissionRepository;
+        this.uuidClient = uuidClient;
     }
     @Override
     @Transactional
@@ -101,6 +106,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 user.setRoles(Set.of(role));
             })
         );
+        String newUserUuid = uuidClient.generateUuid().getUuid();
+        user.setId(newUserUuid);
         userRepository.save(user);
         return JwtAuthenticationResponseDto.builder()
                 .accessToken(jwtService.generateToken(user))

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1704204477001-1
+      id: 1710324269961-1
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -12,30 +12,29 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_group_permission
                   name: group_id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_group_permission
                   name: permission_id
-                  type: BIGINT
+                  type: VARCHAR(255)
             tableName: group_permission
   - changeSet:
-      id: 1704204477001-2
+      id: 1710324269961-2
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_groups
                   name: id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   name: name
                   type: VARCHAR(255)
@@ -44,29 +43,31 @@ databaseChangeLog:
                   type: DATETIME
             tableName: groups
   - changeSet:
-      id: 1704204477001-3
+      id: 1710324269961-3
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_permissions
                   name: id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   name: subject
                   type: VARCHAR(255)
               - column:
                   name: action
                   type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
             tableName: permissions
   - changeSet:
-      id: 1704204477001-4
+      id: 1710324269961-4
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -88,10 +89,10 @@ databaseChangeLog:
                   type: DATETIME
               - column:
                   name: user_id
-                  type: BIGINT
+                  type: VARCHAR(255)
             tableName: refresh_tokens
   - changeSet:
-      id: 1704204477001-5
+      id: 1710324269961-5
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -103,36 +104,35 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_role_permission
                   name: permission_id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_role_permission
                   name: role_id
-                  type: BIGINT
+                  type: VARCHAR(255)
             tableName: role_permission
   - changeSet:
-      id: 1704204477001-6
+      id: 1710324269961-6
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_roles
                   name: id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   name: name
                   type: VARCHAR(255)
             tableName: roles
   - changeSet:
-      id: 1704204477001-7
+      id: 1710324269961-7
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -144,17 +144,17 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_user_group
                   name: group_id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_user_group
                   name: user_id
-                  type: BIGINT
+                  type: VARCHAR(255)
             tableName: user_group
   - changeSet:
-      id: 1704204477001-8
+      id: 1710324269961-8
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -166,30 +166,29 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_user_role
                   name: role_id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_user_role
                   name: user_id
-                  type: BIGINT
+                  type: VARCHAR(255)
             tableName: user_role
   - changeSet:
-      id: 1704204477001-9
+      id: 1710324269961-9
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_users
                   name: id
-                  type: BIGINT
+                  type: VARCHAR(255)
               - column:
                   name: first_name
                   type: VARCHAR(255)
@@ -197,14 +196,23 @@ databaseChangeLog:
                   name: last_name
                   type: VARCHAR(255)
               - column:
+                  name: organization_name
+                  type: VARCHAR(255)
+              - column:
+                  name: personal_email
+                  type: VARCHAR(255)
+              - column:
                   name: email
                   type: VARCHAR(255)
               - column:
                   name: password
                   type: VARCHAR(255)
+              - column:
+                  name: phone
+                  type: VARCHAR(255)
             tableName: users
   - changeSet:
-      id: 1704204477001-10
+      id: 1710324269961-10
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -213,7 +221,7 @@ databaseChangeLog:
             constraintName: uc_groups_name
             tableName: groups
   - changeSet:
-      id: 1704204477001-11
+      id: 1710324269961-11
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -222,7 +230,16 @@ databaseChangeLog:
             constraintName: uc_roles_name
             tableName: roles
   - changeSet:
-      id: 1704204477001-12
+      id: 1710324269961-12
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: personal_email
+            constraintName: uc_users_personal_email
+            tableName: users
+  - changeSet:
+      id: 1710324269961-13
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -233,7 +250,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: users
   - changeSet:
-      id: 1704204477001-13
+      id: 1710324269961-14
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -244,7 +261,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: permissions
   - changeSet:
-      id: 1704204477001-14
+      id: 1710324269961-15
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -255,7 +272,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: groups
   - changeSet:
-      id: 1704204477001-15
+      id: 1710324269961-16
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -266,7 +283,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: permissions
   - changeSet:
-      id: 1704204477001-16
+      id: 1710324269961-17
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -277,7 +294,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: roles
   - changeSet:
-      id: 1704204477001-17
+      id: 1710324269961-18
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -288,7 +305,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: groups
   - changeSet:
-      id: 1704204477001-18
+      id: 1710324269961-19
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -299,7 +316,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: users
   - changeSet:
-      id: 1704204477001-19
+      id: 1710324269961-20
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -310,7 +327,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: roles
   - changeSet:
-      id: 1704204477001-20
+      id: 1710324269961-21
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:

@@ -15,5 +15,5 @@ public interface RefreshTokenRepository extends CrudRepository<RefreshToken, Lon
     void deleteByToken(String token);
 
     @Query("SELECT rt FROM RefreshToken rt WHERE rt.user.id = :userId")
-    Optional<RefreshToken> findByUser(Long userId);
+    Optional<RefreshToken> findByUser(String userId);
 }

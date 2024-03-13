@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 public class PermissionGroupDto {
-    private Long id;
+    private String id;
     private String subject;
     private String action;
 }

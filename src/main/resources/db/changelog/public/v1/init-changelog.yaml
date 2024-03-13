@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1709112880380-7
+      id: 1710329386555-1
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -24,19 +24,50 @@ databaseChangeLog:
                   name: organization_name
                   type: VARCHAR(255)
               - column:
+                  name: tenant_id
+                  type: VARCHAR(255)
+              - column:
                   name: personal_email
                   type: VARCHAR(255)
               - column:
                   name: email
                   type: VARCHAR(255)
+              - column:
+                  name: accession_date
+                  type: DATETIME
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+            schemaName: public
             tableName: tenants
   - changeSet:
-      id: 1709112880380-11
+      id: 1710329386555-2
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: organization_name
+            constraintName: uc_tenants_organization_name
+            schemaName: public
+            tableName: tenants
+  - changeSet:
+      id: 1710329386555-3
       author: idder
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addUniqueConstraint:
             columnNames: personal_email
             constraintName: uc_tenants_personal_email
+            schemaName: public
+            tableName: tenants
+  - changeSet:
+      id: 1710329386555-4
+      author: idder
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: tenant_id
+            constraintName: uc_tenants_tenant
+            schemaName: public
             tableName: tenants
 

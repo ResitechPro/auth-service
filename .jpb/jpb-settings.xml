@@ -10,7 +10,7 @@
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>
-      <persistence-unit name="Default" defaultIncludeChangeLogFile="src/main/resources/db/changelog/tenants/db.tenant.changelog-master.yml">
+      <persistence-unit name="Default" defaultIncludeChangeLogFile="src/main/resources/db/changelog/public/db.public.changelog-master.yml" defaultSearchScope="Selected Entities">
         <packages>
           <package value="com.taskflow" />
         </packages>

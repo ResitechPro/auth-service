@@ -95,7 +95,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
-    @ExceptionHandler({
+    /*@ExceptionHandler({
             InvalidDataAccessResourceUsageException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -106,5 +106,5 @@ public class GlobalExceptionHandler {
                 response,
                 HttpStatus.NOT_FOUND
         );
-    }
+    }*/
 }

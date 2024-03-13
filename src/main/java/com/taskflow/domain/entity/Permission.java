@@ -13,8 +13,7 @@ import lombok.*;
 @Table(name = "permissions")
 public class Permission {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String subject; //entity or resource
     private String action; //create, read, update, delete
     private String description;

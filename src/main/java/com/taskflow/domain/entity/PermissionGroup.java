@@ -15,8 +15,7 @@ import java.util.Set;
 @Table(name = "groups")
 public class PermissionGroup {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     @Column(unique = true)
     private String name;
     @Column(nullable = true)
