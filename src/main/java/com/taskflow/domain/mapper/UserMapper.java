@@ -1,6 +1,7 @@
 package com.taskflow.domain.mapper;
 
 import com.taskflow.domain.dto.request.auth.SignupRequestDto;
+import com.taskflow.domain.dto.request.tenant.TenantCreationRequestDto;
 import com.taskflow.domain.dto.request.user.UserRequestDto;
 import com.taskflow.domain.dto.response.user.UserResponseDto;
 import com.taskflow.domain.entity.PermissionGroup;
@@ -20,7 +21,8 @@ public interface UserMapper {
     @Mapping(source = "roles", target = "rolePermissions", qualifiedByName = "rolesToPermissions")
     @Mapping(source = "permissionGroups", target = "permissionGroupPermissions", qualifiedByName = "permissionGroupsToPermissions")
     UserResponseDto toDto(User user);
-    User toUser(UserRequestDto userDto);
+    @Mapping(target = "userId", source = "id")
+    TenantCreationRequestDto userToTenantCreationDto(User userDto);
     User toUser(SignupRequestDto signUpDto);
 
 

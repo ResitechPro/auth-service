@@ -1,6 +1,7 @@
 package com.taskflow.service.impl;
 
 import com.taskflow.config.context.TenantContext;
+import com.taskflow.domain.dto.request.tenant.TenantCreationRequestDto;
 import com.taskflow.domain.dto.response.auth.JwtAuthenticationResponseDto;
 import com.taskflow.domain.entity.User;
 import com.taskflow.domain.mapper.TenantMapper;
@@ -14,6 +15,7 @@ import com.taskflow.service.AuthenticationService;
 import com.taskflow.service.JwtService;
 import com.taskflow.service.TenantService;
 import com.taskflow.utils.ErrorMessage;
+import com.taskflow.web.feign.PropertyManagementClient;
 import com.taskflow.web.feign.UuidClient;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -43,6 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
     private final UuidClient uuidClient;
+    private final PropertyManagementClient propertyManagementClient;
 
 
     public AuthenticationServiceImpl(
@@ -56,7 +59,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             TenantMapper tenantMapper,
             RoleRepository roleRepository,
             PermissionRepository permissionRepository,
-            UuidClient uuidClient
+            UuidClient uuidClient,
+            PropertyManagementClient propertyManagementClient
     ) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -68,6 +72,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.roleRepository = roleRepository;
         this.permissionRepository = permissionRepository;
         this.uuidClient = uuidClient;
+        this.propertyManagementClient = propertyManagementClient;
     }
     @Override
     @Transactional
@@ -108,7 +113,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
         String newUserUuid = uuidClient.generateUuid().getUuid();
         user.setId(newUserUuid);
-        userRepository.save(user);
+        TenantCreationRequestDto tenantCreationRequestDto = userMapper.userToTenantCreationDto(
+                userRepository.save(user)
+        );
+        tenantCreationRequestDto.setOrganizationId(organizationId);
+        propertyManagementClient.diffuseTenant(
+                organizationId,
+                tenantCreationRequestDto
+        );
         return JwtAuthenticationResponseDto.builder()
                 .accessToken(jwtService.generateToken(user))
                 .user(userMapper.toDto(user))

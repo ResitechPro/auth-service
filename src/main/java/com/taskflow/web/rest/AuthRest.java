@@ -4,7 +4,6 @@ import com.taskflow.domain.dto.request.auth.SigninRequestDto;
 import com.taskflow.domain.dto.request.auth.SignupRequestDto;
 import com.taskflow.domain.dto.request.jwt.RefreshTokenRequestDto;
 import com.taskflow.domain.dto.request.jwt.ValidateTokenRequestDto;
-import com.taskflow.domain.dto.request.user.UserRequestDto;
 import com.taskflow.domain.dto.response.auth.JwtAuthenticationResponseDto;
 import com.taskflow.domain.dto.response.jwt.RefreshTokenResponseDTO;
 import com.taskflow.domain.entity.RefreshToken;
@@ -38,6 +37,7 @@ public class AuthRest {
     private final JwtService jwtService;
     private final UserService userService;
     private final UserMapper userMapper;
+
     public AuthRest(
         AuthenticationService authenticationService,
         RefreshTokenService refreshTokenService,
@@ -57,6 +57,7 @@ public class AuthRest {
         Response<JwtAuthenticationResponseDto> response = new Response<>();
         User user = userMapper.toUser(signupRequestDto);
         JwtAuthenticationResponseDto jwtAuthenticationResponseDto = authenticationService.signup(user,signupRequestDto.getOrganizationId());
+
         jwtAuthenticationResponseDto.setRefreshToken(
             refreshTokenService.getOrCreateRefreshToken(user.getEmail())
             .getToken()
@@ -115,4 +116,5 @@ public class AuthRest {
         response.setResult(validated);
         return ResponseEntity.ok().body(response);
     }
+
 }
