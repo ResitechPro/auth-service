@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "property-management-service")
 public interface PropertyManagementClient {
     final String URL_PREFIX = "/api/v1";
-    @PostMapping(URL_PREFIX + "/tenants")
+    @PostMapping(URL_PREFIX + "/pms/tenants")
     Response<JwtAuthenticationResponseDto> diffuseTenant(
             @RequestHeader("X-tenant-id") String tenantId,
             TenantCreationRequestDto tenantCreationRequestDto
