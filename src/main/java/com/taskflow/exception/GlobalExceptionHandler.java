@@ -5,6 +5,9 @@ import com.taskflow.exception.customexceptions.InValidRefreshTokenException;
 import com.taskflow.exception.customexceptions.ValidationException;
 import com.taskflow.utils.ErrorMessage;
 import com.taskflow.utils.Response;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,20 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler({
+            ExpiredJwtException.class,
+            SignatureException.class,
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Response<Boolean>> notFoundTenant(JwtException ex) {
+        Response<Boolean> response = new Response<>();
+        response.setMessage("Invalid token");
+        response.setResult(false);
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST
+        );
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response<List<ErrorMessage>>> inputValidationException(MethodArgumentNotValidException ex) {
         List<ErrorMessage> errorMessages = new ArrayList<>();
@@ -95,16 +112,4 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
-    /*@ExceptionHandler({
-            InvalidDataAccessResourceUsageException.class
-    })
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Response<String>> notFoundTenant(InvalidDataAccessResourceUsageException ex) {
-        Response<String> response = new Response<>();
-        response.setMessage("Organization Not found ");
-        return new ResponseEntity<>(
-                response,
-                HttpStatus.NOT_FOUND
-        );
-    }*/
 }
