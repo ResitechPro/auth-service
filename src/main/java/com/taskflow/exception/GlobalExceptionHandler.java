@@ -7,6 +7,7 @@ import com.taskflow.utils.ErrorMessage;
 import com.taskflow.utils.Response;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
@@ -27,15 +28,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             ExpiredJwtException.class,
             SignatureException.class,
+            MalformedJwtException.class,
+            JwtException.class
     })
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Response<Boolean>> notFoundTenant(JwtException ex) {
         Response<Boolean> response = new Response<>();
         response.setMessage("Invalid token");
         response.setResult(false);
         return new ResponseEntity<>(
                 response,
-                HttpStatus.BAD_REQUEST
+                HttpStatus.OK
         );
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
