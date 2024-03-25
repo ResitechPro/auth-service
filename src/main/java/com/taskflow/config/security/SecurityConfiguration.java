@@ -43,7 +43,7 @@ public class SecurityConfiguration {
         http
             .cors(cors -> cors.configurationSource(corsConfig()))
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/**")
+            .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
             .permitAll().anyRequest().authenticated())
             .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
             .authenticationProvider(authenticationProvider()).addFilterBefore(
@@ -76,7 +76,7 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfig() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin("http://localhost:8011");
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         configuration.setAllowCredentials(true);

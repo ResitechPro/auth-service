@@ -9,7 +9,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -31,14 +30,14 @@ public class GlobalExceptionHandler {
             MalformedJwtException.class,
             JwtException.class
     })
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Response<Boolean>> notFoundTenant(JwtException ex) {
         Response<Boolean> response = new Response<>();
         response.setMessage("Invalid token");
         response.setResult(false);
         return new ResponseEntity<>(
                 response,
-                HttpStatus.OK
+                HttpStatus.UNAUTHORIZED
         );
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)

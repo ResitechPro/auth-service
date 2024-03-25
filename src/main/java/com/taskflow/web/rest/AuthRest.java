@@ -83,7 +83,8 @@ public class AuthRest {
     }
 
     @PostMapping("/refresh-token")
-    public RefreshTokenResponseDTO refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDTO) throws InValidRefreshTokenException {
+    public ResponseEntity<Response<RefreshTokenResponseDTO>>  refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDTO) throws InValidRefreshTokenException {
+        Response<RefreshTokenResponseDTO> response = new Response<>();
         Optional<RefreshToken> optionalRefreshToken = refreshTokenService.findByToken(refreshTokenRequestDTO.getRefreshToken());
         RefreshToken refreshToken = null;
         if (optionalRefreshToken.isEmpty())
@@ -97,9 +98,13 @@ public class AuthRest {
         }
         UserDetails userDetails = userService.getUserIfExitOrThrowException(refreshToken.getUser().getEmail());
         String accessToken = jwtService.generateToken(userDetails);
-        return RefreshTokenResponseDTO.builder()
-                .accessToken(accessToken)
-                .build();
+        response.setResult(
+                RefreshTokenResponseDTO.builder()
+                        .accessToken(accessToken)
+                        .build()
+        );
+        return ResponseEntity.ok(response);
+
     }
 
 
